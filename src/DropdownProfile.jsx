@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { getUser } from "./store/userProvider.store";
 import defaultProftleImg from "./assets/logo/userDefaultLogo.jpg";
+import styles from "./DropdownProfile.module.css";
 
 function DropdownProfile({ className, dropdownRef }) {
   const userInfo = useContext(getUser).userData;
@@ -9,7 +10,7 @@ function DropdownProfile({ className, dropdownRef }) {
   return (
     //container
     <div
-      className={`${className} aspect-284/248 inline-block w-71 shadow-[0_0_1rem_#0000002A]  rounded-2xl p-4 transition-all`}
+      className={`${className} ${styles.mainContainer} aspect-284/248 inline-block w-71 shadow-[0_0_1rem_#0000002A]  rounded-2xl p-4 transition-all`}
       ref={dropdownRef}
     >
       <span className="text-[0.7rem] text-[#424242] text-shadow-sm ">

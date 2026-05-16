@@ -14,7 +14,6 @@ function SayUser({ children }) {
     (async function fetchUser() {
       const res = await fetch("https://randomuser.me/api/", { signal });
       const data = await res.json();
-      // console.log(data.results[0]); //Log Here
       setUser(data.results[0]);
     })();
 

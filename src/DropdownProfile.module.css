@@ -1,0 +1,12 @@
+.mainContainer {
+  animation: blendIn 0.2s ease;
+}
+
+@keyframes blendIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
