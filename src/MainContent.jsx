@@ -1,27 +1,100 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ContentBox from "./ContentBox";
 import { serverData } from "./store/dataProvider.store";
 
 function MainContent({ className }) {
-  const contentData = useContext(serverData).data;
+  const { data, page, setPage } = useContext(serverData);
+  const [contentData, setContentData] = useState([]);
+  const isFetching = useRef(false);
+  const pageRef = useRef(page);
+  const dataRef = useRef(data);
+
+  const items = contentData.length ? contentData : data || [];
 
   useEffect(() => {
-    try {
-      console.log(contentData[0]);
-    } catch (e) {
-      console.log(e);
+    pageRef.current = page;
+  }, [page]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
+  //call next pages=================
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    async function callNextPage() {
+      if (isFetching.current) return;
+      isFetching.current = true;
+      const nextPage = pageRef.current + 1;
+      setPage(nextPage);
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}photos?per_page=30&page=${nextPage}`,
+          {
+            signal,
+            headers: {
+              Authorization: `Client-ID ${import.meta.env.VITE_API_KEY}`,
+            },
+          },
+        );
+        const newData = await response.json();
+        setContentData((prev) => [
+          ...(prev.length ? prev : dataRef.current || []),
+          ...newData,
+        ]);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.log(error);
+        }
+      } finally {
+        isFetching.current = false;
+      }
     }
-  }, [contentData]);
+
+    const handleScroll = () => {
+      const scrollElement = document.querySelector(".contentDiv");
+      if (!scrollElement) return;
+
+      const scrollTop = scrollElement.scrollTop;
+      const windowHeight = scrollElement.clientHeight;
+      const fullHeight = scrollElement.scrollHeight;
+
+      if (scrollTop + windowHeight >= fullHeight - 100) {
+        console.log("Olla");
+        callNextPage();
+      }
+    };
+
+    const scrollElement = document.querySelector(".contentDiv");
+    scrollElement?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      controller.abort();
+      scrollElement?.removeEventListener("scroll", handleScroll);
+    };
+  }, [setPage]);
+
+  /* useEffect(() => {
+    
+
+    return () => {
+     
+    };
+  }, []); */
 
   return (
     <div
       className={`${className} columns-[240px] break-inside-avoid p-3`}
+      style={{ contain: "layout" }}
     >
-      {contentData.map((content) => {
+      {items.map((content) => {
         return (
           <ContentBox
             key={content.id}
-            className={""}
+            className={"break-inside-avoid"}
             imgUrl={
               content.urls.thumb || content.urls.raw || content.urls.small
             }

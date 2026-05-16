@@ -1,11 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 
 const serverData = createContext({
-  data: {},
+  data: [],
+  page: 1,
+  setPage: () => {},
 });
 
 function ServerDataProvider({ children }) {
   const [fetchedData, setFetchedData] = useState([]);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -23,7 +26,6 @@ function ServerDataProvider({ children }) {
         const result = await data.json();
         setFetchedData(result);
         // console.log(result);
-        
       } catch (error) {
         console.log(error);
         // setTimeout(fData, 2000);
@@ -39,6 +41,8 @@ function ServerDataProvider({ children }) {
     <serverData.Provider
       value={{
         data: fetchedData,
+        page,
+        setPage,
       }}
     >
       {children}

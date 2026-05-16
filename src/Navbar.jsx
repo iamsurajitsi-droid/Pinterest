@@ -11,7 +11,7 @@ function Navbar({ className, dropdownFn }) {
 
   if (!userData) {
     return (
-      <div className={`${className} h-20 flex-1 flex p-4 `}>
+      <div className={`${className}  h-20 flex-1 flex p-4 `}>
         <div className="flex-1 flex items-center bg-[#dadad3] rounded-xl">
           <CiSearch className="text-[1.2rem] ml-4 mr-2" />
           <input
@@ -27,7 +27,7 @@ function Navbar({ className, dropdownFn }) {
 
   return (
     // Navbar
-    <div className={`${className} h-20 flex-1 flex p-4 `}>
+    <div className={`${className} h-20 flex-1 flex p-4 bg-white`}>
       {/* input search */}
       <div className="flex-1 flex items-center bg-[#dadad3] rounded-xl">
         <CiSearch className="text-[1.2rem] ml-4 mr-2" />
