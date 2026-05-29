@@ -20,7 +20,7 @@ function App() {
       <ServerDataProvider>
         <Body className={"h-screen max-w-[100vw] flex"}>
           {/* Sidebar */}
-          <Sidebar className={"fixed top-0 left-0 py-4"} />
+          <Sidebar className={"py-4"} />
           <div className={`contentDiv flex-1 overflow-y-auto h-screen`}>
             {/* Navbar */}
             <Navbar

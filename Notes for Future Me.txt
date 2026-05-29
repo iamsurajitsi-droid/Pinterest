@@ -1,1 +1,0 @@
-Instead of making hook make a context API It will be more handleable then the .

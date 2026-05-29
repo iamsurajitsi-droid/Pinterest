@@ -77,17 +77,11 @@ function MainContent({ className }) {
     };
   }, [setPage]);
 
-  /* useEffect(() => {
-    
-
-    return () => {
-     
-    };
-  }, []); */
+  const openedState = useState(null);
 
   return (
     <div
-      className={`${className} columns-[240px] break-inside-avoid p-3`}
+      className={`${className} columns-[240px] max-sm:columns-2 break-inside-avoid p-3 max-sm:p-1.5 `}
       style={{ contain: "layout" }}
     >
       {items.map((content) => {
@@ -98,6 +92,8 @@ function MainContent({ className }) {
             imgUrl={
               content.urls.thumb || content.urls.raw || content.urls.small
             }
+            contentKey={content.id}
+            openedState={openedState}
           />
         );
       })}

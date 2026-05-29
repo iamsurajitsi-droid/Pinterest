@@ -19,10 +19,10 @@ function Sidebar({ className }) {
 
   return (
     <div
-      className={`${className} w-16 h-screen border-r border-[#c8c8c1] flex flex-col items-center relative shrink-0`}
+      className={`${className} w-16 max-sm:w-12 h-screen border-r border-[#c8c8c1] flex flex-col items-center relative shrink-0`}
     >
       {/* Top Sidebar */}
-      <span className="w-12 aspect-square rounded-lg p-2 ">
+      <span className="w-12 aspect-square rounded-lg p-2 max-sm">
         <img src={appLogo} alt="logo" className="" />
       </span>
       {/* Home */}

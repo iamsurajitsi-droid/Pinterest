@@ -4,6 +4,13 @@
   flex-shrink: 0;
   cursor: pointer;
 }
+
+@media (width<40rem) {
+  .sideLogo {
+    font-size: 1.3rem;
+  }
+}
+
 .blink {
   animation: blink-it 0.3s ease;
 }
