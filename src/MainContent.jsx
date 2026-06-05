@@ -2,14 +2,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import ContentBox from "./ContentBox";
 import { serverData } from "./store/dataProvider.store";
 
-function MainContent({ className }) {
+function MainContent({ className, searehResult }) {
   const { data, page, setPage } = useContext(serverData);
   const [contentData, setContentData] = useState([]);
   const isFetching = useRef(false);
   const pageRef = useRef(page);
   const dataRef = useRef(data);
 
-  const items = contentData.length ? contentData : data || [];
+  let items = contentData.length ? contentData : data || [];
 
   useEffect(() => {
     pageRef.current = page;
@@ -63,7 +63,6 @@ function MainContent({ className }) {
       const fullHeight = scrollElement.scrollHeight;
 
       if (scrollTop + windowHeight >= fullHeight - 100) {
-        console.log("Olla");
         callNextPage();
       }
     };
@@ -78,6 +77,8 @@ function MainContent({ className }) {
   }, [setPage]);
 
   const openedState = useState(null);
+
+  if (searehResult?.length > 0) items = searehResult;
 
   return (
     <div

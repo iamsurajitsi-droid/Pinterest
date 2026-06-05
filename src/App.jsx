@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Body from "./Body";
 import DropdownProfile from "./DropdownProfile";
@@ -15,6 +15,57 @@ function App() {
     dropdown ? setDropdown(false) : setDropdown(true);
   }
 
+  //search fetch Fn
+  /* useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    async function fetchSearch(searchText) {
+      try {
+        const responce = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/search/photos?per_page=30&query=${searchText}`,
+          {
+            signal: signal,
+            headers: {
+              Authorization: `Client-ID ${import.meta.env.VITE_API_KEY}`,
+            },
+          },
+        );
+        const data = await responce.json();
+        console.log("data", data);
+      } catch (error) {
+        console.log(error);
+      }
+
+      return () => {
+        controller.abort();
+      };
+    }
+    fetchSearch("office");
+  }, []); */
+
+  const [searehResult, setSearehResult] = useState(null);
+
+  async function handleSearch(searchText) {
+    if (!searchText.trim()) {
+      setSearehResult(null);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}search/photos?per_page=30&query=${searchText}`,
+        {
+          headers: {
+            Authorization: `Client-ID ${import.meta.env.VITE_API_KEY}`,
+          },
+        },
+      );
+      const data = await response.json();
+      setSearehResult(data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <SayUser>
       <ServerDataProvider>
@@ -27,6 +78,7 @@ function App() {
               className={"sticky top-0 z-20"}
               dropdownFn={toggleDropdown}
               dropdownRef={dropdownRef}
+              onSearch={handleSearch}
               setDropdown={setDropdown}
             />
             {dropdown && (
@@ -35,7 +87,7 @@ function App() {
                 dropdownRef={dropdownRef}
               />
             )}
-            <MainContent />
+            <MainContent searehResult={searehResult} />
           </div>
         </Body>
       </ServerDataProvider>
